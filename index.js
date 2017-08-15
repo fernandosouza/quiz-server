@@ -22,9 +22,11 @@ server.post('/addOption', (req, res, next) => {
 })
 
 server.get('/questions', (req, res, next) => {
+  Question.findAll().then(query => res.send(query))
   return next()
 })
 
-server.get('/question/:id', (req, res, next) => {
+server.get('/answeres', (req, res, next) => {
+  Answer.findAll().then(query => res.send(query))
   return next()
 })
