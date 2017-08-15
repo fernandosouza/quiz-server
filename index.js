@@ -5,17 +5,19 @@ const Question = require('./questions')
 const Answer = require('./answers')
 require('./questionAnswer')
  
-server.get('/addQuestion/:text', (req, res, next) => {
-  Question.create({
-    text: 'abc'
-  }).then(query => {
-    res.send(query)
-  });
+server.post('/addQuestion', (req, res, next) => {
+  let { text } = req.params;
+  Question.create({ text })
+    .then(query => res.send(query)
+  )
   return next()
 })
 
-server.get('/addOption/:text/:question', (req, res, next) => {
-  let {text, question} = req.params;
+server.post('/addOption', (req, res, next) => {
+  let { text } = req.params;
+  Answer.create({ text })
+    .then(query => res.send(query)
+  )
   return next()
 })
 
