@@ -42,3 +42,19 @@ server.get('/answere/:id', (req, res, next) => {
   Answer.findById(id).then(query => res.send(query))
   return next()
 })
+
+server.put('/quiz', (req, res, next) => {
+  let { questionId, answerId } = req.params;
+  Question.findById(questionId).then(question => {
+    if (!question) {
+      res.send('Question not found');
+    }
+    Answer.findById(answerId).then(answer => {
+      question.addAnswer(answer)
+        .then(query => res.send(query))
+    }).catch(e => {
+      res.send('Answer not found')
+    })
+  })
+  return next()
+})
