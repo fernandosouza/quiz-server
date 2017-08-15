@@ -58,3 +58,11 @@ server.put('/quiz', (req, res, next) => {
   })
   return next()
 })
+
+server.get('/questionAnswers/:questionId', (req, res, next) => {
+  let { questionId } = req.params;
+  Question.findById(questionId)
+    .then(question => question.getAnswers())
+    .then(answers => res.send(answers))
+  return next()
+})
