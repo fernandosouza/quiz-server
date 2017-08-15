@@ -30,3 +30,15 @@ server.get('/answeres', (req, res, next) => {
   Answer.findAll().then(query => res.send(query))
   return next()
 })
+
+server.get('/question/:id', (req, res, next) => {
+  let { id } = req.params;
+  Question.findById(id).then(query => res.send(query))
+  return next()
+})
+
+server.get('/answere/:id', (req, res, next) => {
+  let { id } = req.params;
+  Answer.findById(id).then(query => res.send(query))
+  return next()
+})
