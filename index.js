@@ -1,6 +1,10 @@
 const restify = require('restify');
-const model = require('./database');
+const sequelize = require('./connection');
 const corsMiddleware = require('restify-cors-middleware');
+
+const Question = require('./questions');
+const Answer = require('./answers');
+require('./questionAnswer');
  
 const server = restify.createServer({
   name: 'myapp',
@@ -22,42 +26,29 @@ server.use(restify.plugins.queryParser());
 server.use(restify.plugins.bodyParser());
  
 server.get('/addQuestion/:text', (req, res, next) => {
-  // res.send(req.params);
-  model.addQuestion(req.params.text, resp => {
-    res.send(resp);
-  });
   return next();
 });
 
 server.get('/addOption/:text/:question', (req, res, next) => {
   let {text, question} = req.params;
-  model.addOption(text, resp => {
-    if (!question) {
-      res.send(resp);
-    }
-    else {
-      model.associateOptionToQuestion(resp.insertId, question, resp => {
-        res.send(resp);
-      });
-    }
-  });
   return next();
 });
 
 server.get('/questions', (req, res, next) => {
-  model.getQuestions(resp => {
-    res.send(resp);
-  });
   return next();
 });
 
 server.get('/question/:id', (req, res, next) => {
-  model.getQuestion(req.params.id, resp => {
-    res.send(resp);
-  });
   return next();
 });
  
 server.listen(8080, () => {
+  sequelize.authenticate()
+  .then(() => {
+    console.log('DB Connected');
+  })
+  .catch(() => {
+    console.log('DB Connection Error');
+  });
   console.log('%s listening at %s', server.name, server.url);
 });

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "mysql": "^2.13.0",
+    "mysql2": "1.4.0",
     "restify": "^5.0.0",
     "restify-cors-middleware": "^1.0.0",
     "sequelize": "4.4.3"
