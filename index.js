@@ -6,7 +6,11 @@ const Answer = require('./answers')
 require('./questionAnswer')
  
 server.post('/addQuestion', (req, res, next) => {
-  let { text } = req.params;
+  let { text } = req.body;
+  if (!text) {
+    return next(new Error('You have to provide an text'))
+  }
+
   Question.create({ text })
     .then(query => res.send(query)
   )
@@ -14,7 +18,7 @@ server.post('/addQuestion', (req, res, next) => {
 })
 
 server.post('/addOption', (req, res, next) => {
-  let { text } = req.params;
+  let { text } = req.body;
   Answer.create({ text })
     .then(query => res.send(query)
   )
