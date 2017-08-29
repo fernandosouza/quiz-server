@@ -1,4 +1,9 @@
 {
+  "name": "quiz-server",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
   "dependencies": {
     "mysql": "^2.13.0",
     "mysql2": "1.4.0",
