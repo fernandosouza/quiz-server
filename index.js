@@ -26,7 +26,9 @@ server.post('/addOption', (req, res, next) => {
 })
 
 server.get('/questions', (req, res, next) => {
-  Question.findAll().then(query => res.send(query))
+  Question.findAll({
+    order: [['id', 'DESC']]
+  }).then(query => res.send(query))
   return next()
 })
 
