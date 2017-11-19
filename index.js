@@ -38,8 +38,13 @@ server.post('/addOption', (req, res, next) => {
 
 server.get('/questions', (req, res, next) => {
   Question.findAll({
-    order: [['id', 'DESC']]
-  }).then(query => res.send(query))
+    order: [['id', 'DESC']],
+    include: [{
+      model: Answer
+    }]
+  }).then(questions => {
+    res.send(questions)
+  })
   return next()
 })
 
