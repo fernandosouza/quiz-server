@@ -15,7 +15,10 @@ const QuestionAnswer = sequelize.define('questionanswer', {
     value: false
   }
 })
+
 QuestionAnswer.sync({force: true}).then(e => {
-  Question.belongsToMany(Answer, {through: QuestionAnswer})
-  Answer.belongsToMany(Question, {through: QuestionAnswer})
+  Question.belongsToMany(Answer, {through: QuestionAnswer, constraints: false})
+  Answer.belongsToMany(Question, {through: QuestionAnswer, constraints: false})
 })
+
+module.exports = QuestionAnswer;

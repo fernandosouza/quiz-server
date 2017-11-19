@@ -3,7 +3,7 @@ const sequelize = require('./connection')
 
 const Question = require('./questions')
 const Answer = require('./answers')
-require('./questionAnswer')
+const QuestionAnswer = require('./questionAnswer')
  
 server.post('/addQuestion', (req, res, next) => {
   let { text } = req.body;
@@ -18,9 +18,20 @@ server.post('/addQuestion', (req, res, next) => {
 })
 
 server.post('/addOption', (req, res, next) => {
-  let { text } = req.body;
-  Answer.create({ text })
-    .then(query => res.send(query)
+  let { options } = req.body;
+  let { questionId } = req.body;
+  Answer.bulkCreate(options)
+    .then(queryAllOptions => {
+      let answers = queryAllOptions.map(answer => {
+        return {
+          answerId: answer.dataValues.id,
+          questionId: questionId
+        }
+      })
+      QuestionAnswer.bulkCreate(answers).then(queryAll => {
+        res.send(queryAll)
+      })
+    }
   )
   return next()
 })
