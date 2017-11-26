@@ -20,12 +20,14 @@ server.post('/addQuestion', (req, res, next) => {
 server.post('/addOption', (req, res, next) => {
   let { options } = req.body;
   let { questionId } = req.body;
+  let { correct } = req.body;
   Answer.bulkCreate(options)
     .then(queryAllOptions => {
-      let answers = queryAllOptions.map(answer => {
+      let answers = queryAllOptions.map((answer, index) => {
         return {
           answerId: answer.dataValues.id,
-          questionId: questionId
+          questionId: questionId,
+          correct: index == correct ? 1 : 0
         }
       })
       QuestionAnswer.bulkCreate(answers).then(queryAll => {
