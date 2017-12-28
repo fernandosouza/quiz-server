@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('./connection');
 const Answer = require('./answers');
+const options = require('./options');
 
 const Question = sequelize.define('question', {
     text: {
@@ -9,18 +10,13 @@ const Question = sequelize.define('question', {
   });
   
 Question
-    .sync({force: true})
-    .then(() => {
-        return Question.create({
-            text: 'My First Question'
-        });
-    })
-    .then(() => {
-        Question.findById(1).then(question => {
-            Answer.findById(1).then(answer => {
-                // question.addAnswer(answer, {through: 'QuestionAnswer'});
+    .sync({ force: options.drop })
+    .then((args) => {
+        if (options.drop) {
+            return Question.create({
+                text: 'My First Question'
             });
-        });
-    });
+        }
+    })
 
 module.exports = Question;
