@@ -4,6 +4,8 @@ const sequelize = require('./connection')
 const Question = require('./questions')
 const Answer = require('./answers')
 const QuestionAnswer = require('./questionAnswer')
+
+const errors = require('restify-errors');
  
 server.post('/addQuestion', (req, res, next) => {
   let { text } = req.body;
@@ -14,6 +16,75 @@ server.post('/addQuestion', (req, res, next) => {
   Question.create({ text })
     .then(query => res.send(query)
   )
+  return next()
+})
+
+server.del('/question', (req, res, next) => {
+  let { id } = req.body
+  if (!id) {
+    const error = new errors.BadDigestError('id is missing');
+    res.send(error);
+    return next();
+  };
+  Question.destroy({
+    where: {
+      id: id
+    }
+  }).then(question => {
+    QuestionAnswer.destroy({
+      where: {
+        questionId: id
+      }
+    }).then(data => {
+      res.send({
+        status: `${question + 1} row(s) removed`
+      })
+    })
+  })
+  return next()
+})
+
+server.del('/questionAnswer', (req, res, next) => {
+  let { id } = req.body
+  if (!id) {
+    const error = new errors.BadDigestError('id is missing');
+    res.send(error);
+    return next();
+  };
+  QuestionAnswer.destroy({
+    where: {
+      questionId: id
+    }
+  }).then(questionsAnsweres => {
+    res.send({
+      status: `${questionsAnsweres} row(s) removed`
+    })
+  })
+  return next()
+})
+
+server.del('/option', (req, res, next) => {
+  let { id } = req.body
+  if (!id) {
+    const error = new errors.BadDigestError('id is missing');
+    res.send(error);
+    return next();
+  };
+  Answer.destroy({
+    where: {
+      id: id
+    }
+  }).then(questionsAnsweres => {
+    QuestionAnswer.destroy({
+      where: {
+        questionId: id
+      }
+    }).then(data => {
+      res.send({
+        status: `${questionsAnsweres} row(s) removed`
+      })
+    })
+  })
   return next()
 })
 
