@@ -102,7 +102,7 @@ server.post('/addOption', (req, res, next) => {
         }
       })
       QuestionAnswer.bulkCreate(answers).then(queryAll => {
-        res.send(queryAll)
+        res.send(queryAllOptions)
       })
     }
   )
