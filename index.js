@@ -6,7 +6,7 @@ const Answer = require('./answers')
 const QuestionAnswer = require('./questionAnswer')
 
 const errors = require('restify-errors');
- 
+
 server.post('/addQuestion', (req, res, next) => {
   let { text } = req.body;
   if (!text) {
@@ -14,8 +14,7 @@ server.post('/addQuestion', (req, res, next) => {
   }
 
   Question.create({ text })
-    .then(query => res.send(query)
-  )
+    .then(query => res.send(query))
   return next()
 })
 
