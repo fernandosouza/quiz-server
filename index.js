@@ -127,6 +127,36 @@ server.post('/addOption', (req, res, next) => {
   return next()
 })
 
+server.put('/editOption', (req, res, next) => {
+  let { options } = req.body;
+  let { correct } = req.body;
+
+  let updates = options.map(option => {
+    return Answer.update(
+      { text: option.text },
+      {
+        where: {
+          id: option.id
+        }
+      }
+    )
+  })
+  Promise.all(updates).then(data => {
+    if (data.find(a => a[0] !== 1)) {
+      res.send({
+        status: 'fail',
+        message: 'something went wrong'
+      })
+    } else {
+      res.send({
+        status: 'success',
+        message: 'done'
+      })
+    }
+    return next()
+  })
+})
+
 server.get('/questions', (req, res, next) => {
   Question.findAll({
     order: [['id', 'DESC']],
