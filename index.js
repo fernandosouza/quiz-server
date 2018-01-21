@@ -19,6 +19,25 @@ server.post('/addQuestion', (req, res, next) => {
   return next()
 })
 
+server.put('/editQuestion', (req, res, next) => {
+  let { text, id } = req.body;
+  if (!text) {
+    return next(new Error('You have to provide an text'))
+  }
+
+  Question.findById(id).then(
+    question => {
+      question.update({ text }).then(data => {
+        res.send({
+          status: `updated`,
+          question
+        })
+        return next()
+      })
+    }
+  )
+})
+
 server.del('/question', (req, res, next) => {
   let { id } = req.body
   if (!id) {
