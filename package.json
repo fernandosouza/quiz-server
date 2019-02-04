@@ -5,10 +5,10 @@
     "start": "nodemon index.js"
   },
   "dependencies": {
-    "mysql": "^2.13.0",
-    "mysql2": "1.4.0",
-    "restify": "^5.0.0",
-    "restify-cors-middleware": "^1.0.0",
-    "sequelize": "4.31.2"
+    "mysql": "2.15.0",
+    "mysql2": "1.5.3",
+    "restify": "7.1.1",
+    "restify-cors-middleware": "1.1.1",
+    "sequelize": "4.37.7"
   }
 }
