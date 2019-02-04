@@ -8,9 +8,7 @@ const server = restify.createServer({
 
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
-  origins: ['http://localhost:4200'],
-  allowHeaders: ['API-Token'],
-  exposeHeaders: ['API-Token-Expiry']
+  origins: ['*']
 })
 
 server.pre(cors.preflight)
