@@ -1,15 +1,14 @@
 const Sequelize = require('sequelize');
 const sequelize = require('./connection');
-const Answer = require('./answers');
 const options = require('./options');
 
-const Question = sequelize.define('question', {
+const QuestionModel = sequelize.define('question', {
   text: {
     type: Sequelize.STRING
   }
 })
 
-Question
+QuestionModel
   .sync({ force: options.drop })
   .then((args) => {
     if (options.drop) {
@@ -19,4 +18,5 @@ Question
     }
   })
 
-module.exports = Question;
+
+module.exports = QuestionModel;

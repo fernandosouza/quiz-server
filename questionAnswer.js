@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('./connection');
 const Answer = require('./answers');
-const Question = require('./questions');
+const QuestionModel = require('./questions');
 const options = require('./options');
 
 const QuestionAnswer = sequelize.define('questionanswer', {
@@ -18,8 +18,8 @@ const QuestionAnswer = sequelize.define('questionanswer', {
 })
 
 QuestionAnswer.sync({ force: options.drop }).then(e => {
-  Question.belongsToMany(Answer, {through: QuestionAnswer, constraints: false})
-  Answer.belongsToMany(Question, {through: QuestionAnswer, constraints: false})
+  QuestionModel.belongsToMany(Answer, {through: QuestionAnswer, constraints: false})
+  Answer.belongsToMany(QuestionModel, {through: QuestionAnswer, constraints: false})
 })
 
 module.exports = QuestionAnswer;

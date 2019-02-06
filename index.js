@@ -1,24 +1,25 @@
 const server = require('./server')
-const sequelize = require('./connection')
 
-const Question = require('./questions')
+const Question  = require('./question-controller')
 const Answer = require('./answers')
 const QuestionAnswer = require('./questionAnswer')
 
 const errors = require('restify-errors');
 
-server.post('/addQuestion', (req, res, next) => {
-  let { text } = req.body;
-  if (!text) {
-    return next(new Error('You have to provide an text'))
-  }
+server.post('/question', (req, res, next) => {
+  const { text, answers, correct } = req.body;
 
-  Question.create({ text })
+  const question = new Question();
+
+  question.create(text, answers, correct)
     .then(query => res.send(query))
-  return next()
+    .catch(error => {
+      res.send(new errors.BadRequestError(error));
+    })
+  return next();
 })
 
-server.put('/editQuestion', (req, res, next) => {
+server.put('/question', (req, res, next) => {
   let { text, id } = req.body;
   if (!text) {
     return next(new Error('You have to provide an text'))
@@ -106,7 +107,7 @@ server.del('/option', (req, res, next) => {
   return next()
 })
 
-server.post('/addOption', (req, res, next) => {
+server.post('/option', (req, res, next) => {
   let { options } = req.body;
   let { questionId } = req.body;
   let { correct } = req.body;
@@ -127,7 +128,7 @@ server.post('/addOption', (req, res, next) => {
   return next()
 })
 
-server.put('/editOption', (req, res, next) => {
+server.put('/option', (req, res, next) => {
   let { options } = req.body;
   let { correct } = req.body;
 
